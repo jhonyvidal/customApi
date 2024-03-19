@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 function obtener_datos_de_la_tabla() {
     global $wpdb;
 
-    $tabla_nombre = $wpdb->prefix . 'config_api_custom';
+    $tabla_nombre = $wpdb->prefix . 'auto_config_Api_Custom';
 
     // Realiza una consulta para obtener todos los datos de la tabla
     $resultados = $wpdb->get_results("SELECT * FROM $tabla_nombre", ARRAY_A);
@@ -52,6 +52,7 @@ $datos = obtener_datos_de_la_tabla();
 <form method="post" action="">
  <table>
 	<tbody>
+        
 	<?php foreach ($datos as $fila) : ?>
                 <tr>
                     <th scope='row'><label for='dato_<?php echo $fila['id']; ?>'><?php echo esc_html($fila['tipo']); ?></label></th>

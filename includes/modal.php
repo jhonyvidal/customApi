@@ -9,25 +9,25 @@
 </head>
 <body>
 
-<button id="openModalBtn">Abrir Modal</button>
+<!-- <button id="openModalBtn">Abrir Modal</button> -->
 
-<div id="myModal" class="modal">
+<div id="myModal" class="modal" style="z-index: 999;">
   <form id="validateCode">
-    <div class="modal-content" style="text-align: center;">
+    <div class="modal-content" style="text-align: center; border-radius: 20px;">
       <span class="close" id="closeModalBtn">&times;</span>
       <br/>
-      <div id="countdown"></div>
+      <div id="countdown" style="margin-bottom:15px"></div>
       <div class="elementor-field-type-tel elementor-field-group elementor-column elementor-field-group-tel elementor-col-100 elementor-field-required">
         <input size="1" type="number" name="form_fields[tel]" id="form-field-code" class="elementor-field elementor-size-sm  elementor-field-textual" placeholder="Ingresa el Código" required="required" aria-required="true" pattern="[0-9()#&amp;+*-=.]+" title="Only numbers and phone characters (#, -, *, etc) are accepted." aria-invalid="false">
       </div>
-      <div id="myModalErrror" style="color:red">
+      <div id="myModalErrror" style="color:red; margin-top:15px">
 
       </div>
-      <div id="myModalSuccess" style="color:green">
+      <div id="myModalSuccess" style="color:green; margin-top:15px">
 
       </div>
-      <div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100 e-form__buttons">
-        <button type="submit" class="elementor-button elementor-size-md" id="ValidarCodigo">
+      <div class="">
+        <button type="submit" class="" id="ValidarCodigo" style="margin-top: 20px;border-radius: 20px;">
           <span><span class="elementor-align-icon-right elementor-button-icon">
                 <i aria-hidden="true" class="far fa-arrow-alt-circle-up"></i>																	</span>
               <span class="elementor-button-text">Validar</span>

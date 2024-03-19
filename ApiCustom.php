@@ -34,7 +34,7 @@ function ApiCustom() {
 
     global $wpdb; // Obtén la instancia global de la clase de la base de datos de WordPress
 
-    $tabla_nombre = $wpdb->prefix . 'config_Api_Custom'; 
+    $tabla_nombre = $wpdb->prefix . 'auto_config_Api_Custom'; 
 
     // Verifica si la tabla ya existe
     if ($wpdb->get_var("SHOW TABLES LIKE '$tabla_nombre'") != $tabla_nombre) {

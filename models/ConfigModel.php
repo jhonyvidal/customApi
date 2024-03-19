@@ -12,7 +12,9 @@ class ModeloConfig{
 
 		global $wpdb;
 
-		$resultados = $wpdb->get_var( "SELECT dato FROM wp_config_api_custom WHERE tipo = '$tipo' AND estado = 1" );
+		$table = $wpdb->prefix.'auto_config_Api_Custom';
+
+		$resultados = $wpdb->get_var( "SELECT dato FROM $table WHERE tipo = '$tipo' AND estado = 1" );
 
         if(!$resultados) {
             echo json_encode("Ha ocurrido un error en la Consulta a la DB: ". json_encode($resultados));
