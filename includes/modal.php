@@ -36,6 +36,15 @@
       </div>
     </div>
   </form>
+  <div class="modal-content" id="resultModal"  
+       style="
+    text-align: center;
+    border-radius: 20px;
+    max-height: 500px;
+    overflow: scroll;
+    margin-top: 100px;
+    display:none">
+  </div>
 </div>
 
 

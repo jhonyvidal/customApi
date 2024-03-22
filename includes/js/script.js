@@ -32,6 +32,13 @@ jQuery(document).ready(function(){
     //     value: 'F',
     //     text: 'Femenino'
     // }))
+
+    // Obtener el dominio
+    var dominio = window.location.hostname;
+
+    // Obtener el protocolo (http o https)
+    var protocolo = window.location.protocol;
+
     var JobSelect = "E";
     
     jQuery('input[type="radio"][name="wpforms[fields][127]"]').change(function(){
@@ -172,7 +179,7 @@ jQuery(document).ready(function(){
 
         const documentDateFormatt = jQuery("#wpforms-964-field_19-year").val() + '-' + jQuery("#wpforms-964-field_19-month").val()  + '-' + jQuery("#wpforms-964-field_19-day").val()  
         const birthdayFormatt = jQuery("#wpforms-964-field_23-year").val() + '-' + jQuery("#wpforms-964-field_23-month").val()  + '-' + jQuery("#wpforms-964-field_23-day").val()
-
+    
         let  DocumentType
         switch(jQuery("#wpforms-964-field_17").val()){
             case "Cédula de ciudadanía" :
@@ -188,7 +195,7 @@ jQuery(document).ready(function(){
                 DocumentType = 4
                 break 
         }
-
+    
         let  Gender
         switch(jQuery("#wpforms-964-field_21").val() ){
             case "Masculino" :
@@ -198,28 +205,6 @@ jQuery(document).ready(function(){
                 Gender = "F"
                 break 
         }
-
-        const Type = 14 
-        const Value = convertirFormatoANumero(jQuery("#wpforms-964-field_131").val()) - convertirFormatoANumero(jQuery("#wpforms-964-field_132").val());
-        // const DocumentType = jQuery("#wpforms-964-field_17").val()  //3 //peding ask  (Dont exist)
-        const DocumentDate = documentDateFormatt
-        const DocumentCityId = jQuery("#wpforms-964-field_40-state").attr('id_data')    //jQuery("#wpforms-964-field_40-city").val() // 5 //peding ask (form is string)
-        const DocumentStateId = jQuery("#wpforms-964-field_40-city").attr('id_data') //jQuery("#wpforms-964-field_40-state").val() //6  //peding ask (Dont exist)
-        const Document = jQuery("#wpforms-964-field_18").val()
-        const DV = ''  //peding ask (Dont exist)
-        const IsCompany =  false // true  //peding ask (Dont exist)
-        const Name = jQuery("#wpforms-964-field_14").val() 
-        const LastName = jQuery("#wpforms-964-field_15").val() 
-        const LastName2 = jQuery("#wpforms-964-field_16").val() 
-        // const Gender = jQuery("#wpforms-964-field_21").val()  //'H' //jQuery("#form-field-genero").val() (this field is long string dont merge)
-        const BirthDay = birthdayFormatt
-        const Address = jQuery("#wpforms-964-field_40").val() 
-        const Phone = jQuery("#wpforms-964-field_1").val() 
-        const MobilePhone = jQuery("#wpforms-964-field_1").val() 
-        const Email = jQuery("#wpforms-964-field_2").val() 
-        const Status = true //peding ask (Dont exist)
-        // const Job = jQuery("#wpforms-964-field_32").val()   // 'E'//jQuery("#form-field-actividad").val() 
-        const Income = jQuery("#wpforms-964-field_133").val() 
 
         const Fields = {
             "ciudad_nacimiento":  jQuery("#wpforms-964-field_40-city").val() ,
@@ -244,30 +229,62 @@ jQuery(document).ready(function(){
             "valor_vehiculo": convertirFormatoANumero(jQuery("#wpforms-964-field_131").val()),
             "cuota_inicial":  convertirFormatoANumero(jQuery("#wpforms-964-field_132").val()) 
         }
-    
+
+        const completedData = {
+            Type: 14,
+            Fields: Fields, 
+            Value: convertirFormatoANumero(jQuery("#wpforms-964-field_131").val()) - convertirFormatoANumero(jQuery("#wpforms-964-field_132").val()),
+            DocumentType: DocumentType,
+            DocumentDate: documentDateFormatt,
+            DocumentCityId: jQuery("#wpforms-964-field_40-state").attr('id_data'),
+            DocumentStateId: jQuery("#wpforms-964-field_40-city").attr('id_data'),
+            Document: jQuery("#wpforms-964-field_18").val(),
+            DV: '',
+            IsCompany: false,
+            Name: jQuery("#wpforms-964-field_14").val(),
+            LastName:  jQuery("#wpforms-964-field_15").val() ,
+            LastName2: jQuery("#wpforms-964-field_16").val() ,
+            Gender: Gender,
+            BirthDay: birthdayFormatt,
+            Address: jQuery("#wpforms-964-field_40").val(),
+            Phone: jQuery("#wpforms-964-field_1").val() ,
+            MobilePhone: jQuery("#wpforms-964-field_1").val(),
+            Email: jQuery("#wpforms-964-field_2").val(),
+            Status: true,
+            Job:"E",
+            Income: jQuery("#wpforms-964-field_133").val(),
+            TipoIdentificacion: jQuery("#wpforms-964-field_17").val(),
+            Genero:jQuery("#wpforms-964-field_21").val(),
+            Estado:jQuery("#wpforms-964-field_40-city").val(),
+            Ciudad:jQuery("#wpforms-964-field_40-state").val(),
+        };
+   
+        const datosJSON = JSON.stringify(completedData);
+        localStorage.setItem('formData', datosJSON)
+
         var datos = new FormData();
-            datos.append("Type",Type);
+            datos.append("Type",completedData.Type);
             datos.append("Fields",JSON.stringify(Fields));
-            datos.append("Value",Value);
-            datos.append("DocumentType",DocumentType);
-            datos.append("DocumentDate",DocumentDate);
-            datos.append("DocumentCityId",DocumentCityId);
-            datos.append("DocumentStateId",DocumentStateId);
-            datos.append("Document",Document);
-            datos.append("DV",DV);
-            datos.append("IsCompany",IsCompany);
-            datos.append("Name",Name);
-            datos.append("LastName",LastName);
-            datos.append("LastName2",LastName2);
-            datos.append("Gender",Gender);
-            datos.append("BirthDay",BirthDay);
-            datos.append("Address",Address);
-            datos.append("Phone",Phone);
-            datos.append("MobilePhone",MobilePhone);
-            datos.append("Email",Email);
-            datos.append("Status",Status);
-            datos.append("Job",JobSelect);
-            datos.append("Income",Income);
+            datos.append("Value",completedData.Value);
+            datos.append("DocumentType",completedData.DocumentType);
+            datos.append("DocumentDate",completedData.DocumentDate);
+            datos.append("DocumentCityId",completedData.DocumentCityId);
+            datos.append("DocumentStateId",completedData.DocumentStateId);
+            datos.append("Document",completedData.Document);
+            datos.append("DV",completedData.DV);
+            datos.append("IsCompany",completedData.IsCompany);
+            datos.append("Name",completedData.Name);
+            datos.append("LastName",completedData.LastName);
+            datos.append("LastName2",completedData.LastName2);
+            datos.append("Gender",completedData.Gender);
+            datos.append("BirthDay",completedData.BirthDay);
+            datos.append("Address",completedData.Address);
+            datos.append("Phone",completedData.Phone);
+            datos.append("MobilePhone",completedData.MobilePhone);
+            datos.append("Email",completedData.Email);
+            datos.append("Status",completedData.Status);
+            datos.append("Job",completedData.Job);
+            datos.append("Income",completedData.Income);
         
             jQuery.ajax({
                 url: ajaxConsultaApi.url,
@@ -281,9 +298,9 @@ jQuery(document).ready(function(){
                     if(res.Completed && res.StatusCode === 200){
                         jQuery("#myModalSuccess").html("<p>Tu solicitud fue enviada con exito</p>")
                         setTimeout(function(){
-                            modal.style.display = 'none';  
-                        }, 3000);
-                        
+                            createTable();
+                        }, 3000); 
+                        window.location.href =  protocolo + "//" + dominio + "/gracias";
                     }else{
                         jQuery("#myModalErrror").html("<p>Ha occurrido un error</p>")
                     }
@@ -294,6 +311,53 @@ jQuery(document).ready(function(){
                     jQuery("#myModalErrror").html("<p>Ha occurrido un error</p>")
                 },
             })
+    }
+
+    function createTable(){
+        
+        var store =  localStorage.getItem('formData')
+        const data = JSON.parse(store);
+
+        var thStyles = "text-align: left; width:200px";
+
+        var tablaHtml = '<table border="1" style="font-size: 15px; border-radius: 20px;">';
+            tablaHtml += '<tr><th style="' + thStyles + '">Correo</th><td>' +data.Email+ '</td>';
+            tablaHtml += '<th style="' + thStyles + '">Telefono</th><td>'  + data.MobilePhone + '</td></tr>';
+            tablaHtml += '<tr><th style="' + thStyles + '">Nombre</th><td>' + data.Name +'</td>';
+            tablaHtml += '<th style="' + thStyles + '">Primer Apellido</th><td>'+ data.LastName + '</td></tr>';
+            tablaHtml += '<tr><th style="' + thStyles + '">Segundo Apellido</th><td>' + data.LastName2 +  '</td>';
+            tablaHtml += '<th style="' + thStyles + '">Tipo de Identificación</th><td>' + data.TipoIdentificacion + '</td></tr>';
+            tablaHtml += '<tr><th style="' + thStyles + '">Identificación</th><td>' + data.Document + '</td>';
+            tablaHtml += '<th style="' + thStyles + '">Fecha Documento</th><td>' + data.DocumentDate + '</td></tr>';
+            tablaHtml += '<tr><th style="' + thStyles + '">Genero</th><td>' + data.Genero + '</td>';
+            tablaHtml += '<th  style="' + thStyles + '">Fecha Nacimiento</th><td>' + data.BirthDay + '</td></tr>';
+            tablaHtml += '<tr><th style="' + thStyles + '">Dirección</th><td>' + data.Address +  '</td>';
+            tablaHtml += '<th style="' + thStyles + '">Estado</th><td>' + data.Estado + '</td></tr>';
+            tablaHtml += '<tr><th style="' + thStyles + '">Ciudad</th><td>' + data.Ciudad + '</td>';
+            tablaHtml += '<th style="' + thStyles + '">Estado Civil</th><td>' + data.Fields.estado_civil +  '</td></tr>';
+            tablaHtml += '<tr><th style="' + thStyles + '">Nivel de Estudios</th><td>' + data.Fields.nivel_estudios + '</td>';
+            tablaHtml += '<th style="' + thStyles + '">Actividad Economica</th><td>' + data.Fields.actividad_economica +  '</td></tr>';
+            tablaHtml += '<tr><th style="' + thStyles + '">Nit Empresa</th><td>' + data.Fields.nit_empresa + '</td>';
+            tablaHtml += '<th style="' + thStyles + '">Nombre Empresa</th><td>' + data.Fields.nombre_empresa +  '</td></tr>';
+            tablaHtml += '<tr><th style="' + thStyles + '">Tiempo Laborado</th><td>' + data.Fields.tiempo_laborado + '</td>';
+            tablaHtml += '<th style="' + thStyles + '">Tipo Contrato</th><td>' + data.Fields.tipo_contrato +  '</td></tr>';
+            tablaHtml += '<tr><th style="' + thStyles + '">Referencia Personal</th><td>' + data.Fields.nombre_ref_personal + '</td>';
+            tablaHtml += '<th style="' + thStyles + '">Número Referencia</th><td>' + data.Fields.telefono_ref_perso +  '</td></tr>';
+            tablaHtml += '<tr><th style="' + thStyles + '">Referencia Familiar</th><td>' + data.Fields.nombre_ref_fami + '</td>';
+            tablaHtml += '<th style="' + thStyles + '">Número Referencia</th><td>' + data.Fields.tel_ref_famili +  '</td></tr>';
+            tablaHtml += '<tr><th style="' + thStyles + '">Ingresos</th><td>' + data.Fields.ingresos_add + '</td>';
+            tablaHtml += '<th style="' + thStyles + '">Gastos</th><td>' + data.Fields.gastos_familiares +  '</td></tr>';
+            tablaHtml += '<tr><th style="' + thStyles + '">Declara Renta</th><td>' + data.Fields.declara_renta + '</td>';
+            tablaHtml += '<th style="' + thStyles + '">Marca Vehiculo</th><td>' + data.Fields.brand +  '</td></tr>';
+            tablaHtml += '<tr><th style="' + thStyles + '">Tipo Vehiculo</th><td>' + data.Fields.clase_vehiculo + '</td>';
+            tablaHtml += '<th style="' + thStyles + '">Serie Vehiculo</th><td>' + data.Fields.Version +  '</td></tr>';
+            tablaHtml += '<tr><th style="' + thStyles + '">Modelo Vehiculo</th><td>' + data.Fields.year + '</td>';
+            tablaHtml += '<th style="' + thStyles + '">Valor Vehiculo</th><td>' + data.Fields.valor_vehiculo +  '</td></tr>';
+            tablaHtml += '<tr><th style="' + thStyles + '">Cuota Inicial</th><td>' + data.Fields.cuota_inicial + '</td>';
+            tablaHtml += '<th style="' + thStyles + '"></th><td></td></tr>';
+            tablaHtml += '</table>';
+
+        jQuery("#resultTable").html(tablaHtml);
     }
 
     // INICIO MODAL CODE
@@ -315,41 +379,48 @@ jQuery(document).ready(function(){
     // Función para abrir el modal
     function abrirModal() {
         modal.style.display = 'block';
+        // Reiniciar la fecha de finalización a 5 minutos desde ahora cada vez que se abre el modal
+        countDownDate = new Date().getTime() + 5 * 60 * 1000;
+        
+        // Reiniciar el contador si ya estaba corriendo
+        clearInterval(x);
+        iniciarContador(); 
+        jQuery("#myModalErrror").html("")
+        jQuery("#myModalSuccess").html("")
+        jQuery("#resultModal").hide();
+        jQuery("#validateCode").show()
     }  
     // FIN MODAL CODE
 
 
+    // Actualizar el contador cada segundo
+    function iniciarContador() {
+        x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
     
-    // Establecer la fecha de finalización (5 minutos desde ahora)
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+            document.getElementById("countdown").innerHTML = minutes + "m " + seconds + "s ";
+    
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "¡Tiempo agotado!";
+                setTimeout(function(){
+                    modal.style.display = 'none'; 
+                }, 3000);
+            }
+        }, 1000);
+    }
+
+    // Variable para mantener el intervalo
+    var x;
+
+    // Establecer la fecha de finalización inicial (esto se reiniciará cuando se abra el modal)
     var countDownDate = new Date().getTime() + 5 * 60 * 1000;
 
-    // Actualizar el contador cada segundo
-    var x = setInterval(function() {
-        // Obtener la fecha y hora actuales
-        var now = new Date().getTime();
-
-        // Calcular la diferencia entre la fecha de finalización y la fecha actual
-        var distance = countDownDate - now;
-
-        // Calcular minutos y segundos restantes
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        // Mostrar el contador en un elemento HTML
-        document.getElementById("countdown").innerHTML = minutes + "m " + seconds + "s ";
-
-        // Si el contador llega a cero, mostrar un mensaje
-        if (distance < 0) {
-            clearInterval(x);
-            document.getElementById("countdown").innerHTML = "¡Tiempo agotado!";
-        }
-    }, 1000); // Intervalo de actualización cada segundo
-
-
-
-
     //INICIO AUTOCOMPLETE CODE
-   
     function autocomplete(inp, type) {
     var a, b, i, val;
     /*the autocomplete function takes two arguments,
@@ -601,6 +672,32 @@ jQuery(document).ready(function(){
     autocomplete(document.getElementById("wpforms-964-field_40-city"), 'states');
     autocomplete(document.getElementById("wpforms-964-field_63"), 'models');
     //FIN AUTOCOMPLETE CODE
+
+    //MODAL TERM AND CONDITIONS
+    jQuery('#wpforms-964-field_4_1').change(function() {
+        if (jQuery(this).is(':checked')) {
+            openTermModal()
+        } else {
+            console.log('El checkbox no está marcado.');
+        }
+    });
+
+    var termModal = document.getElementById('TermModal');
+
+    var closeTermModalBtn = document.getElementById('closeTermModalBtn');
+    
+    closeTermModalBtn.onclick = function() {
+        termModal.style.display = 'none';
+    };
+    
+    function openTermModal() {
+       
+        var url = protocolo + "//" + dominio +"/politica"
+
+        jQuery('#IframeTerm').html('<iframe src="'+url+'" width="600" height="500" style="margin-top:20px"></iframe>')
+        termModal.style.display = 'block';
+    }  
+    //MODAL TERM AND CONDITIONS
 
 });
 

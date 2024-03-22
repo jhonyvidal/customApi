@@ -19,12 +19,19 @@ $mi_modal_html = '';
 function mostrar_modal_html() {
     global $mi_modal_html;
 
-    $ruta_html = WPTRM_PLUGIN_DIR . '/includes/modal.php';
+    // Lista de archivos PHP a incluir
+    $rutas_html = [
+        WPTRM_PLUGIN_DIR . '/includes/modal.php',
+        WPTRM_PLUGIN_DIR . '/includes/modalTerm.php', 
+    ];
 
-    // Verifica si el archivo HTML existe
-    if (file_exists($ruta_html)) {
-        // Almacena el contenido en la variable
-        $mi_modal_html = file_get_contents($ruta_html);
+    // Recorre cada archivo en la lista
+    foreach ($rutas_html as $ruta_html) {
+        // Verifica si el archivo existe
+        if (file_exists($ruta_html)) {
+            // Almacena el contenido en la variable, concatenando los contenidos
+            $mi_modal_html .= file_get_contents($ruta_html);
+        }
     }
 
     // Llama a la función directamente dentro del gancho de acción wp_footer
